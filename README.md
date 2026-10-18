@@ -5,6 +5,15 @@
 - 사이트: https://oscarkiwankim.github.io/seoul-specialty-coffee/
 - 데이터: 서울시 상권분석서비스, 서울 열린데이터광장, LOCALDATA 휴게음식점 인허가, 유튜브 검색 결과 (기준 2026년 2분기)
 
+## 조원과 역할
+| 이름 | 역할 |
+|---|---|
+| 김기완 | 응원 |
+| 김혜승 | 업무 수행 |
+
+## "뜬다"의 정의
+서울시 내에서 최근 5년간 일부 상권은 존재했으나, 대량의 유입은 없었던 권역.
+
 ## 매장 컨셉 영상
 - [군자 테이스팅 룸 컨셉 영상 (52초)](assets/gunja-tasting-room-concept.mp4)
 - 바로 보기: https://oscarkiwankim.github.io/seoul-specialty-coffee/assets/gunja-tasting-room-concept.mp4
@@ -16,5 +25,5 @@
 4. 타겟 고객과 매장 컨셉 "군자 테이스팅 룸"
 
 ## 추가할 내용
-- 조번호, 조원과 역할, GitHub 계정
+- 조번호, GitHub 계정
 - 사용한 프롬프트 전문
