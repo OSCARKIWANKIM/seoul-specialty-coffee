@@ -1,493 +1,162 @@
 <!doctype html>
 <html lang="ko">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>군자 테이스팅 룸</title>
-<meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="향후 3년 안에 뜰 서울 스페셜티 커피 상권 3곳과 1순위 군자의 매장 컨셉">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" />
 <style>
-/* Layout: 공간 UI — 따뜻한 조명이 번진 방(배경) 위에 유리 패널이 깊이별로 떠 있는 구조. 상단 플로팅 독, 섹션마다 한 장의 메인 윈도우 */
-:root{
-  --room-1:#efe4d6; --room-2:#e2cdb4; --glow:#f3b46b;
-  --glass:rgba(255,252,247,.62); --glass-strong:rgba(255,252,247,.82); --glass-edge:rgba(255,255,255,.75);
-  --ink:#2b2119; --ink-2:#6a5848; --line:rgba(80,55,30,.14);
-  --accent:#a8562a; --accent-soft:rgba(168,86,42,.12);
-  --pass:#2f7d4f; --pass-bg:rgba(47,125,79,.13); --fail:#b23a2e; --fail-bg:rgba(178,58,46,.12); --warn:#9a6a10; --warn-bg:rgba(154,106,16,.14);
-  --shadow:0 1px 0 rgba(255,255,255,.6) inset, 0 24px 60px -24px rgba(70,40,15,.35), 0 4px 14px -6px rgba(70,40,15,.18);
-  --f-display:"Gowun Batang","Noto Serif KR",serif;
-  --f-body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
-  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
-}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --room-1:#1b1410; --room-2:#2a1d14; --glow:#c9782e;
-  --glass:rgba(48,36,28,.55); --glass-strong:rgba(56,42,32,.8); --glass-edge:rgba(255,220,180,.14);
-  --ink:#f4e9dc; --ink-2:#bba893; --line:rgba(255,220,180,.13);
-  --accent:#f0a46a; --accent-soft:rgba(240,164,106,.14);
-  --pass:#7fd1a0; --pass-bg:rgba(127,209,160,.14); --fail:#ff8f80; --fail-bg:rgba(255,143,128,.13); --warn:#f2c46b; --warn-bg:rgba(242,196,107,.14);
-  --shadow:0 1px 0 rgba(255,230,200,.08) inset, 0 30px 70px -24px rgba(0,0,0,.7), 0 4px 14px -6px rgba(0,0,0,.5);
-  color-scheme:dark}}
-:root[data-theme="dark"]{
-  --room-1:#1b1410; --room-2:#2a1d14; --glow:#c9782e;
-  --glass:rgba(48,36,28,.55); --glass-strong:rgba(56,42,32,.8); --glass-edge:rgba(255,220,180,.14);
-  --ink:#f4e9dc; --ink-2:#bba893; --line:rgba(255,220,180,.13);
-  --accent:#f0a46a; --accent-soft:rgba(240,164,106,.14);
-  --pass:#7fd1a0; --pass-bg:rgba(127,209,160,.14); --fail:#ff8f80; --fail-bg:rgba(255,143,128,.13); --warn:#f2c46b; --warn-bg:rgba(242,196,107,.14);
-  --shadow:0 1px 0 rgba(255,230,200,.08) inset, 0 30px 70px -24px rgba(0,0,0,.7), 0 4px 14px -6px rgba(0,0,0,.5);
-  color-scheme:dark}
-
-*{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:90px}
-body{margin:0;background:var(--room-1);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.65;
-  background-image:radial-gradient(60vw 50vw at 12% -5%,color-mix(in srgb,var(--glow) 38%,transparent),transparent 70%),
-  radial-gradient(50vw 40vw at 100% 30%,color-mix(in srgb,var(--glow) 22%,transparent),transparent 70%),
-  linear-gradient(180deg,var(--room-1),var(--room-2));background-attachment:fixed;min-height:100%}
-.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 80px}
-
-/* floating dock */
-.dock{position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px);z-index:10;display:flex;justify-content:center;margin-block:12px 0}
-.dock nav{display:flex;gap:4px;padding:6px;border-radius:999px;background:var(--glass-strong);border:1px solid var(--glass-edge);
-  backdrop-filter:blur(24px) saturate(1.4);-webkit-backdrop-filter:blur(24px) saturate(1.4);box-shadow:var(--shadow);overflow-x:auto;max-width:100%;scrollbar-width:none}
-.dock a{flex:none;padding:8px 14px;border-radius:999px;color:var(--ink-2);text-decoration:none;font-size:14px;font-weight:500;white-space:nowrap}
-.dock a:hover,.dock a:focus-visible{background:var(--accent-soft);color:var(--ink);outline:none}
-
-.panel{position:relative;background:var(--glass);border:1px solid var(--glass-edge);border-radius:28px;box-shadow:var(--shadow);
-  backdrop-filter:blur(28px) saturate(1.3);-webkit-backdrop-filter:blur(28px) saturate(1.3);padding:clamp(20px,4vw,44px)}
-.sub{background:var(--glass-strong);border:1px solid var(--glass-edge);border-radius:20px;padding:20px;min-width:0}
-section{margin-top:56px}
-.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin:0 0 10px}
-h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.25;font-weight:700}
-h1{font-size:clamp(38px,6.4vw,76px);letter-spacing:-.01em}
-h2{font-size:clamp(26px,3.4vw,38px);margin-bottom:12px}
-h3{font-size:20px;margin-bottom:8px}
-p{margin:0}
-.lead{font-size:clamp(17px,1.6vw,20px);color:var(--ink-2);max-width:62ch}
-.muted{color:var(--ink-2)}
-.small{font-size:14px}
-.stack{display:flex;flex-direction:column;gap:16px}
-.grid{display:grid;gap:16px}
-.g2{grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr))}
-.g3{grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
-.num{font-variant-numeric:tabular-nums}
-
-/* hero */
-.hero{margin-top:28px;display:grid;grid-template-columns:1.3fr 1fr;gap:20px;align-items:stretch}
-@media (max-width:820px){.hero{grid-template-columns:1fr}}
-.hero .panel{display:flex;flex-direction:column;gap:20px;justify-content:center}
-.podium{display:flex;flex-direction:column;gap:12px}
-.rank{display:grid;grid-template-columns:56px 1fr auto;gap:14px;align-items:center;padding:16px 18px;border-radius:20px;background:var(--glass-strong);border:1px solid var(--glass-edge);box-shadow:var(--shadow)}
-.rank:first-child{transform:translateZ(0) scale(1.02);border-color:color-mix(in srgb,var(--accent) 40%,var(--glass-edge))}
-.rank b{font-family:var(--f-display);font-size:30px;color:var(--accent);text-align:center}
-.rank strong{font-size:18px;display:block}
-.rank span{font-size:13px;color:var(--ink-2)}
-
-.chip{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;padding:3px 10px;border-radius:999px;white-space:nowrap}
-.pass{color:var(--pass);background:var(--pass-bg)} .fail{color:var(--fail);background:var(--fail-bg)} .warn{color:var(--warn);background:var(--warn-bg)} .neutral{color:var(--ink-2);background:var(--line)}
-
-blockquote{margin:0;padding:18px 22px;border-radius:18px;background:var(--accent-soft);font-family:var(--f-display);font-size:clamp(17px,1.8vw,21px);line-height:1.6}
-
-.tablebox{overflow-x:auto;border-radius:18px;border:1px solid var(--line);background:var(--glass-strong)}
-table{width:100%;border-collapse:collapse;font-size:14.5px;min-width:560px}
-th,td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
-th{font-size:12px;font-family:var(--f-mono);letter-spacing:.06em;color:var(--ink-2);font-weight:500;background:color-mix(in srgb,var(--glass-strong) 60%,transparent)}
-tr:last-child td{border-bottom:0}
-td.r,th.r{text-align:right}
-.hl td{background:var(--accent-soft)}
-
-/* indicator cards */
-.ind{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start}
-.ind .n{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;font-family:var(--f-mono);font-weight:500;background:var(--accent-soft);color:var(--accent)}
-.ind .tag{font-size:12px;font-weight:600;color:var(--ink-2)}
-
-/* bars */
-.bars{display:flex;flex-direction:column;gap:10px}
-.bar{display:grid;grid-template-columns:72px 1fr 64px;gap:10px;align-items:center;font-size:14px}
-.track{height:12px;border-radius:999px;background:var(--line);position:relative;overflow:hidden}
-.fill{position:absolute;inset:0 auto 0 0;border-radius:999px;background:var(--accent)}
-.fill.dim{background:color-mix(in srgb,var(--ink-2) 55%,transparent)}
-
-/* concept */
-.concept-video{margin:0;display:flex;flex-direction:column;gap:10px}
-.concept-video video{display:block;width:100%;aspect-ratio:16/9;border-radius:22px;border:1px solid var(--glass-edge);box-shadow:var(--shadow);background:#24180f}
-.concept-video figcaption{font-size:13px;color:var(--ink-2)}
-.concept-hero{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-@media (max-width:820px){.concept-hero{grid-template-columns:1fr}}
-.daynight{display:grid;grid-template-columns:1fr 1fr;border-radius:22px;overflow:hidden;border:1px solid var(--glass-edge)}
-.daynight > div{padding:22px;display:flex;flex-direction:column;gap:6px}
-.day{background:color-mix(in srgb,#ffe7b8 55%,var(--glass-strong))}
-.night{background:color-mix(in srgb,#2a1a10 80%,var(--glass-strong));color:#f4e4cf}
-.night .muted{color:#cdb59a}
-.day,.day .muted{color:#3a2a1c}
-.time{font-family:var(--f-mono);font-size:12px;letter-spacing:.1em}
-dl.spec{display:grid;grid-template-columns:110px 1fr;gap:12px 18px;margin:0}
-dl.spec dt{font-family:var(--f-mono);font-size:12.5px;color:var(--accent);letter-spacing:.06em;padding-top:3px}
-dl.spec dd{margin:0}
-@media (max-width:520px){dl.spec{grid-template-columns:1fr;gap:4px}dl.spec dd{margin-bottom:12px}}
-
-.persona{display:flex;flex-direction:column;gap:10px}
-.persona .who{display:flex;justify-content:space-between;gap:8px;align-items:baseline;flex-wrap:wrap}
-.persona ul{margin:0;padding-left:18px;color:var(--ink-2);font-size:14.5px}
-
-ul.clean{margin:0;padding-left:18px}
-ul.clean li+li{margin-top:6px}
-details{border-radius:18px;background:var(--glass-strong);border:1px solid var(--glass-edge);padding:4px 18px}
-details+details{margin-top:12px}
-summary{cursor:pointer;padding:14px 0;font-weight:600;list-style-position:outside}
-summary:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:6px}
-details[open] summary{border-bottom:1px solid var(--line);margin-bottom:14px}
-details > *:last-child{margin-bottom:16px}
-code{font-family:var(--f-mono);font-size:.9em;background:var(--line);padding:1px 6px;border-radius:6px}
-footer{margin-top:56px;color:var(--ink-2);font-size:13.5px}
-@media (prefers-reduced-motion:no-preference){
-  .panel,.rank{animation:rise .7s cubic-bezier(.2,.7,.2,1) both}
-  @keyframes rise{from{transform:translateY(10px)}to{transform:none}}
-}
+:root{--bg:#07090d;--fg:#f4f1ea;--muted:rgba(244,241,234,.7);--glass:rgba(255,255,255,.07);--line:rgba(255,255,255,.16);--accent:#e8b77f;--ok:#7fe0b0;--mid:#f3c96b;--no:#ff8a7a}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#efe9df;--fg:#1d1a16;--muted:rgba(29,26,22,.68);--glass:rgba(255,255,255,.55);--line:rgba(0,0,0,.1);--accent:#9a5b22;--ok:#167a4a;--mid:#9a6a00;--no:#b8382a}}
+:root[data-theme="dark"]{--bg:#07090d;--fg:#f4f1ea}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font-family:"Noto Sans KR",system-ui,sans-serif;line-height:1.6}
+.env{position:fixed;inset:0;z-index:-1;background:radial-gradient(900px 600px at 15% 20%,rgba(201,138,75,.45),transparent 60%),radial-gradient(900px 600px at 90% 80%,rgba(42,138,143,.4),transparent 60%),var(--bg)}
+.glass{background:var(--glass);backdrop-filter:blur(30px) saturate(1.4);-webkit-backdrop-filter:blur(30px) saturate(1.4);border:1px solid var(--line);border-radius:28px;box-shadow:0 30px 80px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.2);padding:28px}
+nav{position:sticky;top:16px;z-index:5;margin:16px auto;width:fit-content;max-width:calc(100% - 32px);display:flex;gap:4px;overflow-x:auto;padding:6px;border-radius:99px}
+nav a{color:var(--fg);text-decoration:none;font-size:14px;padding:8px 14px;border-radius:99px;white-space:nowrap}nav a:hover{background:var(--line)}
+main{max-width:1120px;margin:0 auto;padding:0 16px 80px}
+section{margin:56px 0}.eyebrow{color:var(--accent);letter-spacing:.18em;font-size:13px;font-weight:700;text-transform:uppercase}
+h1{font-size:clamp(40px,8vw,84px);line-height:1.1;margin:8px 0;font-weight:900;letter-spacing:-.03em}h2{font-size:clamp(26px,4vw,38px);margin:6px 0 18px}h3{margin:0 0 8px}
+p,li{color:var(--muted)}.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+table{width:100%;border-collapse:collapse;font-size:14px}th,td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left}td.r,th.r{text-align:right}th{color:var(--accent);font-weight:700}
+.scroll{overflow-x:auto}.ok{color:var(--ok)}.mid{color:var(--mid)}.no{color:var(--no)}
+.big{font-size:44px;font-weight:900;color:var(--fg)}.tag{display:inline-block;font-size:12px;padding:2px 10px;border-radius:99px;border:1px solid var(--line);margin-right:6px}
+.hero{padding:48px 32px;transform:perspective(1200px) rotateX(2deg)}.hl{border-color:var(--accent)}
+.bar{display:flex;align-items:center;gap:12px;margin:8px 0}.bar span:first-child{width:48px}.track{flex:1;height:14px;border-radius:9px;background:var(--line)}.fill{height:100%;border-radius:9px;background:linear-gradient(90deg,#c98a4b,#f3c96b)}
+video{width:100%;border-radius:20px}
 </style>
 </head>
 <body>
+<div class="env"></div>
+<nav class="glass">
+<a href="#def">지표 정의</a><a href="#rank">후보 검토</a><a href="#gunja">1위 군자</a><a href="#concept">컨셉</a><a href="#target">타겟</a><a href="#design">공간 UI</a><a href="#video">영상</a><a href="#appendix">부록</a>
+</nav>
+<main>
+<section class="glass hero">
+<div class="eyebrow">서울 스페셜티 카페 상권 제안 · 2026-10-18</div>
+<h1>향후 3년, 다음은 군자</h1>
+<p>성수·연남처럼 이미 뜬 곳은 정답이 아닙니다. 서울시 상권분석·인허가 데이터로 '뜬다'를 정의하고 후보를 걸렀습니다. <b>1순위 군자 · 2순위 문래 · 3순위 약수</b> (팀 합의). 1순위 상권에는 <b>군자 테이스팅 룸</b>을 제안합니다.</p>
+</section>
 
-<div class="wrap">
-  <div class="dock"><nav aria-label="섹션">
-    <a href="#top">개요</a><a href="#define">정의·지표</a><a href="#rank">선정</a><a href="#gunja">군자 논의</a><a href="#target">타겟</a><a href="#concept">컨셉</a><a href="#gaps">남은 과제</a><a href="#log">작업 기록</a>
-  </nav></div>
-
-  <!-- HERO -->
-  <div class="hero" id="top">
-    <div class="panel">
-      <p class="eyebrow">Seoul Specialty Coffee · 2026–2029</p>
-      <h1>다음 성수는<br>군자입니다</h1>
-      <p class="lead">향후 3년 안에 뜰 서울 스페셜티 커피 상권 3곳을 성수의 도약기에 맞춘 지표 5개로 골랐습니다. 1순위 군자에는 낮에는 동네 에스프레소 바, 저녁에는 예약제 커피 코스를 여는 <b>군자 테이스팅 룸</b>을 제안합니다.</p>
-      <p class="small muted">기준 시점 2026년 2분기 · 서울시 상권분석서비스, 휴게음식점 인허가(LOCALDATA), 유튜브 검색 결과</p>
-    </div>
-    <div class="podium" aria-label="최종 순위">
-      <div class="rank panel" style="padding:16px 18px"><b>1</b><div><strong>군자역</strong><span>매출 확인(③)과 변동지표(⑤)를 함께 통과한 유일한 후보</span></div><span class="chip pass">상권확장</span></div>
-      <div class="rank"><b>2</b><div><strong>문래예술촌</strong><span>변동지표는 확장이지만 매출·카페 증가가 약함</span></div><span class="chip pass">상권확장</span></div>
-      <div class="rank"><b>3</b><div><strong>약수역</strong><span>20~30대 비중은 오르지만 점포당 매출이 급감</span></div><span class="chip fail">정체</span></div>
-      <p class="small muted" style="padding:0 6px">팀 합의 순위입니다. 데이터가 결론과 엇갈리는 부분은 숨기지 않고 리스크로 표기했습니다.</p>
-    </div>
-  </div>
-
-  <!-- DEFINE -->
-  <section id="define">
-    <div class="panel stack" style="gap:24px">
-      <div>
-        <p class="eyebrow">Step 1 · 정의</p>
-        <h2>"뜬다"를 이렇게 정의했습니다</h2>
-      </div>
-      <blockquote>개인 카페가 서울 상위권 속도로 늘고, 20~30대 유동 비중이 높고 오르며, 아직 성수·홍대만큼 포화되지 않았고, 서울시 상권변동지표가 다이나믹·확장인 상권.</blockquote>
-      <p class="muted">이미 뜬 곳(성수, 연남 등)은 정답에서 뺐습니다. 성수가 뜬 시점을 2021년으로 보고, 그 직전(2017~2020) 성수의 수치에 맞춰 기준선을 잡았습니다.</p>
-
-      <div>
-        <p class="eyebrow">Step 2 · 지표와 기준</p>
-        <div class="grid g2">
-          <div class="sub ind"><div class="n">①</div><div><p class="tag">선행 지표</p><h3>개인 카페 영업중 증가 (인허가, 3년)</h3><p class="small muted">순증 +25곳 이상, 증가율 +41% 이상 (서울 상위 10%·25%)</p></div></div>
-          <div class="sub ind"><div class="n">②</div><div><p class="tag">선행 지표</p><h3>20~30대 유동 비중</h3><p class="small muted">44.5% 이상, 2년 변화 +1.5%p 이상 (상위 25%)</p></div></div>
-          <div class="sub ind"><div class="n">③</div><div><p class="tag">확인 지표</p><h3>점포당 월매출</h3><p class="small muted">2년 +24% 이상이면 확인, −10% 이하면 탈락</p></div></div>
-          <div class="sub ind"><div class="n">④</div><div><p class="tag">확인 지표</p><h3>객단가</h3><p class="small muted">2년 +13% 이상</p></div></div>
-          <div class="sub ind"><div class="n">⑤</div><div><p class="tag">필터</p><h3>서울시 상권변동지표</h3><p class="small muted">다이나믹·확장은 통과, 정체·축소는 탈락</p></div></div>
-          <div class="sub"><p class="tag" style="font-size:12px;font-weight:600;color:var(--ink-2)">성수 보정값</p><p class="small" style="margin-top:6px">2017→2020 인허가 +31곳(상위 6%), +42%(상위 24%). 2021Q1→2023Q1 20~30대 비중 43.8~51.5%(+2.7~3.6%p, 상위 6~13%). ③④는 성수 도약기에 앞서 움직이지 않아 확인용으로 내렸습니다.</p><p class="small muted" style="margin-top:8px">이 기준은 성수에 맞춘 보정이며, 예측력을 검증한 것은 아닙니다.</p></div>
-        </div>
-      </div>
-
-      <details>
-        <summary>지표 후보 중 뺀 것과 이유</summary>
-        <div class="tablebox"><table>
-          <thead><tr><th>지표</th><th>판정</th><th>비고</th></tr></thead>
-          <tbody>
-            <tr><td>지도 검색량 (구글·네이버·카카오)</td><td><span class="chip fail">불가</span></td><td>비공개. 네이버 데이터랩·구글 트렌드로 대체 가능</td></tr>
-            <tr><td>유튜브</td><td><span class="chip pass">가능</span></td><td>월별 업로드 수·조회수</td></tr>
-            <tr><td>인스타그램</td><td><span class="chip warn">제한적</span></td><td>현재 시점 해시태그 수만, 로그인 필요</td></tr>
-            <tr><td>X, 틱톡</td><td><span class="chip fail">비추천</span></td><td>로그인·API·차단</td></tr>
-            <tr><td>기사</td><td><span class="chip pass">가능</span></td><td>네이버 뉴스 API는 최근 1,000건 한계</td></tr>
-          </tbody></table></div>
-      </details>
-      <details>
-        <summary>사용한 서울시 데이터셋</summary>
-        <div class="tablebox"><table>
-          <thead><tr><th>서비스명</th><th>내용</th></tr></thead>
-          <tbody>
-            <tr><td><code>VwsmTrdarSelngQq</code></td><td>추정매출-상권. 커피-음료 업종의 매출·결제건수·시간대·연령 (2021Q1~2026Q2)</td></tr>
-            <tr><td><code>VwsmTrdarStorQq</code></td><td>점포-상권. 점포·프랜차이즈·개업·폐업 (2021Q1~2026Q2)</td></tr>
-            <tr><td><code>VwsmTrdarFlpopQq</code></td><td>길단위 유동인구-상권 (연령·시간대·요일)</td></tr>
-            <tr><td><code>VwsmTrdarIxQq</code></td><td>상권변동지표 (다이나믹·확장·정체·축소)</td></tr>
-            <tr><td><code>VwsmTrdarRepopQq</code>, <code>VwsmTrdarWrcPopltnQq</code></td><td>상주인구, 직장인구</td></tr>
-            <tr><td><code>SPOP_LOCAL_RESD_DONG</code></td><td>생활인구 (행정동, 일 단위)</td></tr>
-            <tr><td><code>LOCALDATA_072405</code></td><td>휴게음식점 인허가 (2001년~, 커피숍 업태, 좌표·인허가일·폐업일)</td></tr>
-          </tbody></table></div>
-        <p class="small muted">임대료는 열린데이터광장 API에 없어 한국부동산원 자료가 필요합니다.</p>
-      </details>
-    </div>
-  </section>
-
-  <!-- RANK -->
-  <section id="rank">
-    <div class="panel stack" style="gap:24px">
-      <div>
-        <p class="eyebrow">Step 3 · 지표 분석</p>
-        <h2>후보 3곳을 지표에 대 보면</h2>
-        <p class="muted">초록은 기준 통과, 빨강은 탈락 또는 기준 미달, 노랑은 부분 충족입니다.</p>
-      </div>
-      <div class="tablebox"><table>
-        <thead><tr><th>지표</th><th>1 · 군자역</th><th>2 · 문래예술촌</th><th>3 · 약수역</th></tr></thead>
-        <tbody class="num">
-          <tr><td>① 개인 카페 증가</td><td><span class="chip warn">과거 +89% · 최근 −6%</span></td><td><span class="chip fail">영업중 +1%</span></td><td><span class="chip fail">−3%</span></td></tr>
-          <tr><td>② 20~30대 비중</td><td><span class="chip warn">45.2% (0.0%p)</span></td><td><span class="chip fail">34.3%</span></td><td><span class="chip warn">34.7% (+1.5%p)</span></td></tr>
-          <tr><td>③ 점포당 월매출</td><td><span class="chip pass">4,610만 (+38.2%)</span></td><td><span class="chip fail">−12.3%</span></td><td><span class="chip fail">−52.7%</span></td></tr>
-          <tr><td>④ 객단가</td><td><span class="chip warn">+11.7%</span></td><td><span class="chip neutral">+4.1%</span></td><td><span class="chip fail">−11.2%</span></td></tr>
-          <tr><td>⑤ 상권변동지표</td><td><span class="chip pass">상권확장</span></td><td><span class="chip pass">상권확장</span></td><td><span class="chip fail">정체</span></td></tr>
-        </tbody></table></div>
-
-      <div class="grid g2">
-        <div class="sub stack" style="gap:12px">
-          <h3>영업중 카페 증가율: 도약기 vs 최근</h3>
-          <p class="small muted">인허가 기준. 군자의 2017→2020 증가율은 성수 도약기의 두 배입니다.</p>
-          <div class="bars num" aria-label="2017→2020 증가율">
-            <p class="time muted">2017 → 2020</p>
-            <div class="bar"><span>군자</span><div class="track"><div class="fill" style="width:89%"></div></div><span class="r">+89%</span></div>
-            <div class="bar"><span>성수</span><div class="track"><div class="fill dim" style="width:42%"></div></div><span class="r">+42%</span></div>
-            <div class="bar"><span>연희</span><div class="track"><div class="fill dim" style="width:21%"></div></div><span class="r">+21%</span></div>
-            <div class="bar"><span>연남</span><div class="track"><div class="fill dim" style="width:0%"></div></div><span class="r">0%</span></div>
-          </div>
-          <div class="tablebox"><table style="min-width:0">
-            <thead><tr><th>상권</th><th class="r">2017→2020</th><th class="r">2022→2025</th></tr></thead>
-            <tbody class="num">
-              <tr><td>성수</td><td class="r">74→105 (+42%)</td><td class="r">97→104 (+7%)</td></tr>
-              <tr><td>연남</td><td class="r">156→156 (0%)</td><td class="r">204→182 (−11%)</td></tr>
-              <tr><td>연희</td><td class="r">67→81 (+21%)</td><td class="r">101→103 (+2%)</td></tr>
-              <tr class="hl"><td>군자</td><td class="r">35→66 (+89%)</td><td class="r">77→72 (−6%)</td></tr>
-            </tbody></table></div>
-        </div>
-        <div class="sub stack" style="gap:12px">
-          <h3>점포당 월매출 2년 변화</h3>
-          <p class="small muted">확인 지표 ③. 군자만 기준(+24%)을 넘었습니다.</p>
-          <div class="bars num">
-            <div class="bar"><span>군자</span><div class="track"><div class="fill" style="width:38.2%"></div></div><span class="r">+38.2%</span></div>
-            <div class="bar"><span>문래</span><div class="track"><div class="fill dim" style="width:12.3%;background:var(--fail)"></div></div><span class="r">−12.3%</span></div>
-            <div class="bar"><span>약수</span><div class="track"><div class="fill dim" style="width:52.7%;background:var(--fail)"></div></div><span class="r">−52.7%</span></div>
-          </div>
-          <p class="small muted">빨간 막대는 감소 폭입니다.</p>
-          <h3 style="margin-top:8px">참고: 이미 뜬 상권</h3>
-          <ul class="clean small">
-            <li><b>성수동카페거리</b> 카페 30→43곳, 점포당 월매출 1,330만→3,490만원, 객단가 6,336→10,305원</li>
-            <li><b>홍대입구역</b> 카페 183→215곳(2025Q1 정점 235 이후 감소), 월매출 3,430만→5,480만원, 20~30대 59.4%→62.3%. 포화 후 정체</li>
-            <li><b>약수역</b> 카페 15→22곳, 월매출 3,320만→1,020만원(−69%), 20~30대 32.6%→34.7%, 정체</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="grid g2">
-        <div class="sub">
-          <h3>약수: 담론과 소비의 괴리</h3>
-          <p class="small">유튜브에서 "성수 다음"이라는 약수 영상은 약 91만 회 조회됐지만, 카드 매출은 반대로 움직였습니다. 크리에이터가 만드는 화제성이 실제 소비로 이어지지 않는 사례로 따로 기록합니다.</p>
-        </div>
-        <div class="sub">
-          <h3>서울 전체 스크리닝 상위권</h3>
-          <p class="small">2024Q2→2026Q2 기준: 어린이대공원역 3번, 경희대삼거리, 마포FM, 경동고등학교, 능동우편취급국, 서연중학교, 신림역 순. <span class="muted">대학가 편향이 있고, 마포FM·경동고는 위치를 확인하지 못했습니다. 어린이대공원역·능동은 군자 생활권과 맞닿아 있습니다.</span></p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- GUNJA -->
-  <section id="gunja">
-    <div class="panel stack" style="gap:24px">
-      <div>
-        <p class="eyebrow">Step 4 · 1순위 논의</p>
-        <h2>왜 군자인가, 그리고 무엇이 걸리는가</h2>
-      </div>
-      <div class="grid g2">
-        <div class="sub stack" style="gap:10px">
-          <span class="chip pass" style="align-self:flex-start">근거</span>
-          <ul class="clean">
-            <li>후보 중 유일하게 매출 확인(③ +38.2%)과 변동지표(⑤ 상권확장)를 함께 통과</li>
-            <li>2017→2020 개인 카페 +89%로 성수 도약기(+42%)보다 빠르게 개척자가 들어옴</li>
-            <li>20~30대 비중 45.2%로 기준(44.5%) 이상</li>
-            <li>5·7호선 환승역으로 성수·건대 생활권과 가깝습니다. 하퍼스바자(2026.09)가 군자·중곡·아차산·구의를 "성수 다음"으로 소개</li>
-            <li>서울시 상권분석서비스(군자동, 커피-음료, 2026Q2): 폐업률 1.1%, 임대료 2년 +23.6%로 자리값이 먼저 오르는 중</li>
-          </ul>
-        </div>
-        <div class="sub stack" style="gap:10px">
-          <span class="chip fail" style="align-self:flex-start">리스크 (그대로 표기)</span>
-          <ul class="clean">
-            <li>최근 개인 카페 −35%(11곳), 영업중 카페 77→72(−6%)</li>
-            <li>20~30대 비중 변화 0.0%p로 정체</li>
-            <li>유튜브 "군자 카페" 중앙 조회수 538회로 화제성은 아직 낮음</li>
-            <li>임대료 상승이 진입 비용을 밀어 올리는 중</li>
-          </ul>
-          <blockquote style="font-size:16px">핵심 리스크: 개인 카페 감소의 원인이 수요 부족일 수 있습니다. <b>점포당 월매출 증가율이 두 분기 연속 둔화하면서 개인 카페가 더 줄면 군자 안을 철회합니다.</b></blockquote>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- TARGET -->
-  <section id="target">
-    <div class="panel stack" style="gap:24px">
-      <div>
-        <p class="eyebrow">Who · 타겟 고객</p>
-        <h2>누구를 공략하나</h2>
-        <p class="muted">군자의 20~30대 비중(45.2%), 높은 주거인구와 낮은 직장인구, 세종대·건대 생활권, 성수와의 근접성을 근거로 세 그룹을 잡았습니다. 시간대별 매출 비중은 아직 확인하지 않아 가설로 둡니다.</p>
-      </div>
-      <div class="grid g3">
-        <div class="sub persona">
-          <div class="who"><h3>동네 단골</h3><span class="chip neutral">낮 · 평일</span></div>
-          <p class="small">군자·능동·중곡에 사는 20대 후반~30대 1~2인 가구. 출근 전후와 주말 오전에 매일 들르는 한 잔이 필요합니다.</p>
-          <ul><li>공략: 서서 마시는 에스프레소 바, 빠른 회전, 매일 와도 부담 없는 가격</li><li>잡아두는 장치: 이름 기억, 원두 정기 구매</li></ul>
-        </div>
-        <div class="sub persona">
-          <div class="who"><h3>커피 탐험가</h3><span class="chip neutral">저녁 · 주말</span></div>
-          <p class="small">성수·연남을 돌던 20~30대 카페 투어족과 커플. "아직 덜 알려진 곳"을 먼저 찾는 데서 만족을 얻습니다.</p>
-          <ul><li>공략: 예약제 커피 코스, 원산지 이야기, 솔드아웃되는 카다멈 번</li><li>잡아두는 장치: 찍고 싶은 공간과 굿즈</li></ul>
-        </div>
-        <div class="sub persona">
-          <div class="who"><h3>캠퍼스 크루</h3><span class="chip neutral">오후</span></div>
-          <p class="small">세종대·건대 대학생과 대학원생. 혼자 오래 앉기보다 친구와 짧게 머물며 SNS에 공유합니다.</p>
-          <ul><li>공략: 굿즈 티셔츠·스티커, 핀터레스트 감성 공간</li><li>주의: 소규모 매장이라 장시간 착석 수요는 받지 않음</li></ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CONCEPT -->
-  <section id="concept">
-    <div class="panel stack" style="gap:24px">
-      <div>
-        <p class="eyebrow">What · 매장 컨셉 (팀 확정안)</p>
-        <h2>군자 테이스팅 룸</h2>
-        <p class="lead">커피만 12년 판 느좋부부 사장이 운영하는 핀터레스트 감성 소규모 커뮤니티형 카페</p>
-      </div>
-
-      <figure class="concept-video">
-        <video controls playsinline preload="metadata" poster="assets/gunja-tasting-room-poster.jpg">
-          <source src="assets/gunja-tasting-room-concept.mp4" type="video/mp4">
-          <a href="assets/gunja-tasting-room-concept.mp4">컨셉 영상 보기 (MP4)</a>
-        </video>
-        <figcaption>매장 컨셉 영상 · 52초 · 소리 없음</figcaption>
-      </figure>
-
-      <div class="concept-hero">
-        <div class="daynight">
-          <div class="day"><p class="time">DAY</p><h3>동네 에스프레소 바</h3><p class="small muted">스탠딩 카운터, 빠른 한 잔. 동네 단골과 캠퍼스 크루의 일상</p></div>
-          <div class="night"><p class="time">NIGHT · 예약제</p><h3>커피 코스</h3><p class="small muted">원두와 추출을 코스로 맛보는 테이스팅. 커피 탐험가의 목적지</p></div>
-        </div>
-        <div class="sub stack" style="gap:10px">
-          <h3>왜 이 컨셉이 군자에 맞나</h3>
-          <ul class="clean small">
-            <li>군자는 이미 디저트 카페가 강해서, 디저트나 넓은 공간으로 경쟁하지 않고 커피 경험으로 차별화합니다.</li>
-            <li>낮 매출로 고정비를 버티고, 저녁 코스로 객단가를 올립니다. 객단가(④ +11.7%)가 기준에 조금 못 미친 점을 보완합니다.</li>
-            <li>임대료가 오르는 중이라 소규모 매장이 유리합니다.</li>
-            <li>참고한 해외 흐름: 도쿄의 코스형 커피 테이스팅, 미국의 동네 거점형 카페와 원산지 중시.</li>
-          </ul>
-        </div>
-      </div>
-
-      <dl class="spec">
-        <dt>인테리어</dt><dd>망원 빈티지샵에서 팔 것 같은 우드톤의 깔끔한 테이블. 따뜻한 조명을 군데군데 두어 깔끔하고 포근하게</dd>
-        <dt>커피</dt><dd>낮에는 동네 에스프레소 바, 저녁에는 예약제 커피 코스</dd>
-        <dt>디저트</dt><dd>카다멈 번을 메인으로 한 이색 베이커리 3종 이내. 매일 솔드아웃될 만큼 소량만 판매</dd>
-        <dt>음악</dt><dd>Yussef Dayes 같은 재즈 플레이리스트</dd>
-        <dt>운영자 무드</dt><dd>타투 3개 안팎, 콧수염 또는 턱수염, 안경, 아메카지 차림의 사장님. 공동 운영자는 섬세한 인상으로 대비</dd>
-        <dt>직원 복장</dt><dd>카페 굿즈 티셔츠를 그대로 직원복으로</dd>
-        <dt>리테일</dt><dd>커스텀 원두, 에코백, 스티커</dd>
-      </dl>
-      <p class="small muted">"12년"은 스토리 설정이라 실제 경력과 다르면 홍보 문구로 쓰지 않습니다. 운영자 외모는 비주얼 무드로만 쓰고 채용 조건으로 삼지 않습니다.</p>
-    </div>
-  </section>
-
-  <!-- GAPS -->
-  <section id="gaps">
-    <div class="panel stack" style="gap:20px">
-      <div><p class="eyebrow">Next · 남은 과제</p><h2>아직 비어 있는 것</h2></div>
-      <div class="grid g2">
-        <div class="sub"><h3>데이터</h3><ul class="clean small">
-          <li>인스타그램 해시태그·카페 계정 언급 (해시태그 페이지 오류로 미측정)</li>
-          <li>유튜브 업로드 시계열 (날짜 정렬 미적용으로 증가율 미계산)</li>
-          <li>임대료·권리금 (한국부동산원)</li>
-          <li>군자 경쟁 카페 가격, 저녁 시간대 매출 비중</li>
-          <li>연희 상권 코드 위치 확인</li>
-        </ul></div>
-        <div class="sub"><h3>매장 운영과 제출물</h3><ul class="clean small">
-          <li>코스 가격, 디저트 일 한정 수량, 좌석 수, 굿즈 구성</li>
-          <li>README (조번호, GitHub 계정, 조원 역할, 프롬프트 전문)</li>
-          <li>GitHub Pages 배포</li>
-        </ul></div>
-      </div>
-      <div class="sub">
-        <h3>유튜브 "{동네} 카페" 상위 약 80편의 중앙 조회수</h3>
-        <div class="bars num" style="margin-top:10px">
-          <div class="bar"><span>성수</span><div class="track"><div class="fill dim" style="width:100%"></div></div><span class="r">29,377</span></div>
-          <div class="bar"><span>홍대</span><div class="track"><div class="fill dim" style="width:14.1%"></div></div><span class="r">4,154</span></div>
-          <div class="bar"><span>연남</span><div class="track"><div class="fill dim" style="width:3.8%"></div></div><span class="r">1,120</span></div>
-          <div class="bar"><span>약수</span><div class="track"><div class="fill dim" style="width:2.3%"></div></div><span class="r">670</span></div>
-          <div class="bar"><span>군자</span><div class="track"><div class="fill" style="width:1.8%"></div></div><span class="r">538</span></div>
-          <div class="bar"><span>연희동</span><div class="track"><div class="fill dim" style="width:1.7%"></div></div><span class="r">502</span></div>
-          <div class="bar"><span>신림</span><div class="track"><div class="fill dim" style="width:1.5%"></div></div><span class="r">434</span></div>
-          <div class="bar"><span>문래</span><div class="track"><div class="fill dim" style="width:1.2%"></div></div><span class="r">355</span></div>
-          <div class="bar"><span>회기</span><div class="track"><div class="fill dim" style="width:1%"></div></div><span class="r">306</span></div>
-          <div class="bar"><span>어린이대공원</span><div class="track"><div class="fill dim" style="width:.75%"></div></div><span class="r">220</span></div>
-        </div>
-        <p class="small muted" style="margin-top:10px">성수=100% 기준 막대. 기사·영상 같은 화제성은 후행 지표라 순위 산정에는 쓰지 않았습니다.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- LOG -->
-  <section id="log">
-    <div class="panel stack" style="gap:16px">
-      <div><p class="eyebrow">Appendix · 작업 기록 (2026-10-18)</p><h2>이 과제를 하며 만든 것들</h2>
-      <p class="muted small">API 키(DART, 서울 열린데이터광장)는 이 페이지에서 뺐습니다. 채팅에 노출된 키는 재발급을 권합니다.</p></div>
-
-      <details><summary>만든 파일</summary>
-        <div class="tablebox"><table><thead><tr><th>파일</th><th>내용</th></tr></thead><tbody>
-          <tr><td><code>kakao_dashboard.html</code></td><td>카카오 분기 실적 대시보드 (2024~2026 분기 비교)</td></tr>
-          <tr><td><code>output/카카오_20261018_01.html</code></td><td>DART 인터랙티브 실적 리포트 (2Q26, 숫자 검증 67/67 통과)</td></tr>
-          <tr><td><code>output/카카오_data.json</code>, <code>output/카카오_parts/</code></td><td>리포트 데이터와 조각 파일</td></tr>
-          <tr><td><code>gunja_hotspot.html</code></td><td>군자 제안 v1 (디자인 불만으로 폐기)</td></tr>
-          <tr><td><code>gunja_hotspot_v2.html</code></td><td>군자 제안 v2 (DART 리포트 디자인 적용, 매장 컨셉 포함)</td></tr>
-          <tr><td><code>conversation_summary.md</code></td><td>대화 정리 문서</td></tr>
-          <tr><td><code>index.html</code></td><td>이 페이지</td></tr>
-        </tbody></table></div>
-      </details>
-
-      <details><summary>카카오 분기별 실적 (연결, 억원, DART)</summary>
-        <p class="small muted" style="margin-bottom:12px">4분기는 연간에서 3분기 누적을 뺀 값입니다. 2026년 3분기는 공시 전입니다.</p>
-        <div class="tablebox"><table><thead><tr><th>분기</th><th class="r">매출 2024</th><th class="r">2025</th><th class="r">2026</th><th class="r">영업이익 2024</th><th class="r">2025</th><th class="r">2026</th><th class="r">순이익 2024</th><th class="r">2025</th><th class="r">2026</th></tr></thead>
-        <tbody class="num">
-          <tr><td>1Q</td><td class="r">19,884</td><td class="r">18,637</td><td class="r">19,421</td><td class="r">1,203</td><td class="r">1,054</td><td class="r">2,114</td><td class="r">677</td><td class="r">2,003</td><td class="r">2,268</td></tr>
-          <tr><td>2Q</td><td class="r">20,049</td><td class="r">20,283</td><td class="r">20,985</td><td class="r">1,340</td><td class="r">1,859</td><td class="r">2,770</td><td class="r">871</td><td class="r">1,718</td><td class="r">180</td></tr>
-          <tr><td>3Q</td><td class="r">19,214</td><td class="r">20,866</td><td class="r muted">미공시</td><td class="r">1,305</td><td class="r">2,080</td><td class="r muted">미공시</td><td class="r">785</td><td class="r">1,929</td><td class="r muted">미공시</td></tr>
-          <tr><td>4Q</td><td class="r">19,570</td><td class="r">21,205</td><td class="r muted">미공시</td><td class="r">754</td><td class="r">2,327</td><td class="r muted">미공시</td><td class="r">−3,952</td><td class="r">−471</td><td class="r muted">미공시</td></tr>
-        </tbody></table></div>
-        <ul class="clean small" style="margin-top:12px">
-          <li>2026년 보고서가 2025년 1Q·2Q를 재작성했습니다(1Q 매출 17,479 / 영업이익 1,274, 2Q 매출 19,175 / 영업이익 2,039). 전년 대비는 재작성값 기준입니다.</li>
-          <li>2Q26: 매출 +9.4%, 영업이익 +35.9%, 영업이익률 10.6% → 13.2%, 순이익 −89.5%(게임 사업 연결 제외에 따른 중단영업손실 등)</li>
-          <li>주가 31,700원(10/16 종가), 52주 30,250~69,700원</li>
-          <li>인터랙티브 리포트는 조사와 검증을 직접 했습니다. 사업부문 전년 수치는 증감률로 역산한 추정치이고, 증권사는 3곳만 실었습니다.</li>
-        </ul>
-      </details>
-
-      <details><summary>도구 설치</summary>
-        <ul class="clean small">
-          <li><b>hound</b>: 이미 설치되어 있었습니다 (<code>hound@airoasting</code> v1.1.0)</li>
-          <li><b>hyperframes</b>: 플러그인 설치 명령은 세션에서 실행하지 못했습니다. Node.js v24.20.0과 FFmpeg 9.0.2는 winget으로 설치했습니다.</li>
-          <li>설치 명령: <code>claude plugin marketplace add heygen-com/hyperframes</code>, <code>claude plugin install hyperframes@hyperframes</code></li>
-        </ul>
-      </details>
-
-      <details><summary>진행 방향 메모</summary>
-        <ul class="clean small">
-          <li>정당화 순서: 지표 정의 → 지표 기준 → 지표 분석 1·2·3위 → 1위 논의</li>
-          <li>팀은 군자를 1순위로 정했고, 데이터가 그 결론과 충돌하는 부분(개인 카페 감소 등)은 숨기지 않고 리스크로 표기합니다.</li>
-        </ul>
-      </details>
-    </div>
-  </section>
-
-  <footer>
-    <p>출처: 서울시 상권분석서비스(golmok.seoul.go.kr), 서울 열린데이터광장, LOCALDATA 휴게음식점 인허가, DART, 유튜브 검색 결과, 하퍼스바자 코리아(2026.09), 에스콰이어 코리아(2026.02·04).</p>
-  </footer>
+<section id="def">
+<div class="eyebrow">01 · 지표 정의</div><h2>'뜬다'란 무엇인가</h2>
+<div class="glass"><p style="font-size:18px;color:var(--fg)">개인 카페가 서울 상위권 속도로 늘고, 20~30대 유동 비중이 높고 오르며, 아직 성수·홍대만큼 포화되지 않았고, 서울시 상권변동지표가 다이나믹·확장인 상권.</p></div>
+<div class="grid" style="margin-top:16px">
+<div class="glass"><span class="tag">선행</span><h3>① 개인 카페 증가</h3><p>인허가 3년. 순증 +25곳↑, 증가율 +41%↑ (서울 상위 10%·25%)</p></div>
+<div class="glass"><span class="tag">선행</span><h3>② 20~30대 유동 비중</h3><p>44.5%↑, 2년 변화 +1.5%p↑ (상위 25%)</p></div>
+<div class="glass"><span class="tag">확인</span><h3>③ 점포당 월매출</h3><p>2년 +24%↑ 확인, -10% 이하 탈락</p></div>
+<div class="glass"><span class="tag">확인</span><h3>④ 객단가</h3><p>2년 +13%↑</p></div>
+<div class="glass"><span class="tag">필터</span><h3>⑤ 상권변동지표</h3><p>다이나믹·확장 통과, 정체·축소 탈락</p></div>
 </div>
+<div class="glass" style="margin-top:16px"><h3>성수 보정</h3><p>성수 2017→2020 인허가 +31곳(상위 6%), +42%(상위 24%). 2021Q1→2023Q1 20~30대 비중 43.8~51.5%(+2.7~3.6%p, 상위 6~13%). 성수는 2021년을 '뜬 시점'으로 가정. ③④는 성수 도약기에 선행하지 않아 확인용으로 내렸습니다. <b>이 기준은 성수에 맞춘 보정이며 예측 검증이 아닙니다.</b></p></div>
+<div class="glass scroll" style="margin-top:16px"><h3>지표 후보의 실현 가능성</h3><table><tr><th>지표</th><th>판정</th><th>비고</th></tr>
+<tr><td>지도 검색량</td><td class="no">불가</td><td>비공개. 네이버 DataLab·구글 트렌드로 대체</td></tr><tr><td>유튜브</td><td class="ok">가능</td><td>월별 업로드 수·조회수</td></tr><tr><td>인스타그램</td><td class="mid">제한적</td><td>현재 해시태그 수만, 로그인 필요</td></tr><tr><td>X, 틱톡</td><td class="no">비추천</td><td>로그인·API·차단</td></tr><tr><td>기사</td><td class="ok">가능</td><td>네이버 뉴스 API 최근 1,000건 한계</td></tr></table></div>
+</section>
+
+<section id="rank">
+<div class="eyebrow">02 · 지표 분석</div><h2>후보 3곳 검토</h2>
+<div class="glass scroll"><table><tr><th>지표</th><th>군자역 (1위)</th><th>문래예술촌 (2위)</th><th>약수역 (3위)</th></tr>
+<tr><td>① 개인 카페 증가</td><td class="mid">과거 +89%, 최근 -6%</td><td class="no">영업중 +1%</td><td class="no">-3%</td></tr>
+<tr><td>② 20~30대 비중</td><td class="ok">45.2% (0.0%p)</td><td class="no">34.3%</td><td class="mid">34.7% (+1.5%p)</td></tr>
+<tr><td>③ 점포당 월매출</td><td class="ok">4,610만 (+38.2%)</td><td class="no">-12.3%</td><td class="no">-52.7%</td></tr>
+<tr><td>④ 객단가</td><td class="mid">+11.7%</td><td class="no">+4.1%</td><td class="no">-11.2%</td></tr>
+<tr><td>⑤ 상권변동지표</td><td class="ok">상권확장</td><td class="ok">상권확장</td><td class="no">정체</td></tr></table>
+<p>군자는 ③ 매출 확인과 ⑤ 변동지표를 동시에 통과한 유일한 후보입니다.</p></div>
+<div class="grid" style="margin-top:16px">
+<div class="glass"><h3>기준 상권 비교 · 영업중 카페</h3>
+<div class="bar"><span>군자</span><div class="track"><div class="fill" style="width:89%"></div></div><span>+89%</span></div>
+<div class="bar"><span>성수</span><div class="track"><div class="fill" style="width:42%"></div></div><span>+42%</span></div>
+<div class="bar"><span>연희</span><div class="track"><div class="fill" style="width:21%"></div></div><span>+21%</span></div>
+<div class="bar"><span>연남</span><div class="track"><div class="fill" style="width:1%"></div></div><span>0%</span></div>
+<p>2017→2020 기준</p></div>
+<div class="glass scroll"><table><tr><th>상권</th><th class="r">2017→2020</th><th class="r">2022→2025</th></tr>
+<tr><td>성수</td><td class="r">74→105 (+42%)</td><td class="r">97→104 (+7%)</td></tr><tr><td>연남</td><td class="r">156→156 (0%)</td><td class="r">204→182 (-11%)</td></tr><tr><td>연희</td><td class="r">67→81 (+21%)</td><td class="r">101→103 (+2%)</td></tr><tr><td>군자</td><td class="r">35→66 (+89%)</td><td class="r">77→72 (-6%)</td></tr></table></div>
+</div>
+<div class="glass" style="margin-top:16px"><h3>성수·연남·홍대·약수 레퍼런스</h3><ul>
+<li><b>홍대입구역</b>: 카페 183→215곳(2025Q1 정점 235 이후 감소), 점포당 월매출 3,430만→5,480만원, 20~30대 59.4%→62.3%. 포화 후 정체·감소.</li>
+<li><b>약수역</b>: 카페 15→22곳, 점포당 월매출 3,320만→1,020만원(-69%), 20~30대 32.6%→34.7%, 정체.</li>
+<li><b>성수동카페거리</b>: 카페 30→43곳, 점포당 월매출 1,330만→3,490만원, 객단가 6,336→10,305원.</li>
+<li><b>약수의 괴리</b>: 유튜브 "성수 다음" 영상 약 91만 회, 카드 매출은 반대. 크리에이터 담론과 실제 소비의 괴리.</li></ul></div>
+</section>
+
+<section id="gunja">
+<div class="eyebrow">03 · 1위 논의</div><h2>왜 군자인가, 그리고 무엇이 불안한가</h2>
+<div class="grid">
+<div class="glass hl"><div class="big">4,610만</div><p>점포당 월매출 (+38.2%)</p></div>
+<div class="glass"><div class="big">45.2%</div><p>20~30대 유동 비중</p></div>
+<div class="glass"><div class="big">확장</div><p>서울시 상권변동지표</p></div>
+<div class="glass"><div class="big">+89%</div><p>영업중 카페 2017→2020 (35→66)</p></div>
+</div>
+<div class="glass" style="margin-top:16px;border-color:var(--no)"><h3 class="no">숨기지 않는 리스크</h3><ul>
+<li>최근 개인 카페 -35%(11곳), 20~30대 비중 변화 0.0%p</li>
+<li>개인 카페 감소의 원인이 수요 부족일 수 있음</li>
+<li><b>철회 조건</b>: 점포당 월매출 증가율이 두 분기 연속 둔화하면서 개인 카페가 추가로 감소하면 철회</li></ul></div>
+</section>
+
+<section id="concept">
+<div class="eyebrow">04 · 매장 컨셉 (팀 확정안)</div><h2>군자 테이스팅 룸</h2>
+<div class="glass hl"><p style="font-size:18px;color:var(--fg)">커피만 12년 판 느좋부부 사장이 운영하는 핀터레스트 감성 소규모 커뮤니티형 카페</p></div>
+<div class="grid" style="margin-top:16px">
+<div class="glass"><h3>☕ 커피</h3><p>낮에는 동네 에스프레소 바, 저녁에는 예약제 커피 코스.</p></div>
+<div class="glass"><h3>🥐 디저트</h3><p>카다멈 번 메인, 이색 베이커리 3종 이내. 매일 솔드아웃될 만큼 소량.</p></div>
+<div class="glass"><h3>🪵 인테리어</h3><p>망원 빈티지샵 감성 우드톤 테이블, 군데군데 따뜻한 조명, 깔끔하고 포근하게.</p></div>
+<div class="glass"><h3>🎧 음악</h3><p>Yusuf Dayes 같은 플레이리스트.</p></div>
+<div class="glass"><h3>🧔 사장님 무드</h3><p>타투 3개 안팎, 콧수염 또는 턱수염, 안경, 아메카지. 공동 운영자(와이프)는 섬세한 인상으로 대비.</p></div>
+<div class="glass"><h3>👕 직원·굿즈</h3><p>카페 굿즈 티셔츠를 직원복으로. 커스텀 원두·에코백·스티커 판매.</p></div>
+</div>
+<p style="font-size:13px">주의: "12년"은 스토리 설정이라 실제 경력과 다르면 홍보 문구로 쓰지 않습니다. 외모 이미지는 비주얼 무드로만 쓰고 채용 조건으로 삼지 않습니다.</p>
+</section>
+
+<section id="target">
+<div class="eyebrow">05 · 타겟 고객 (가설)</div><h2>시간대별로 다른 손님을 잡는다</h2>
+<div class="grid">
+<div class="glass"><span class="tag">DAY · 데일리</span><h3>군자·세종대 생활권 2030</h3><p>20~30대 유동 비중 45.2%를 받는 핵심층. 출근·등교길 에스프레소 한 잔을 루틴으로 만드는 스탠딩 바.</p></div>
+<div class="glass"><span class="tag">NIGHT · 경험</span><h3>동부 서울 커피 애호가</h3><p>성수 웨이팅에 지친 커플·친구. 예약제 커피 코스와 디저트 페어링으로 '찾아오는 이유'를 만든다. 객단가 상승(④) 견인.</p></div>
+<div class="glass"><span class="tag">WEEKEND · 커뮤니티</span><h3>동네 단골</h3><p>원두·굿즈·솔드아웃 카다멈 번으로 재방문과 입소문. 개인 카페 감소(리스크)를 커뮤니티로 버틴다.</p></div>
+</div>
+<p style="font-size:13px">타겟은 상권 데이터 기반 가설이며 저녁 시간대 매출 비중·경쟁 카페 가격은 현장 확인이 남아 있습니다.</p>
+</section>
+
+<section id="design">
+<div class="eyebrow">06 · 디자인 컨셉</div><h2>공간 UI (Spatial UI)</h2>
+<div class="grid">
+<div class="glass"><h3>환경 위에 뜬 유리</h3><p>따뜻한 커피빛·청록 조명을 흐린 '공간' 배경에, 정보는 반투명 유리 패널(backdrop blur + 얇은 하이라이트 테두리)로 띄웁니다.</p></div>
+<div class="glass"><h3>깊이로 위계를 만든다</h3><p>중요한 패널은 앞으로(z↑, 선명), 덜 중요한 패널은 뒤로(흐림·축소). 영상에서 군자 카드가 앞으로 나오고 나머지는 물러납니다.</p></div>
+<div class="glass"><h3>떠 있는 오너먼트</h3><p>상단 알약형 내비게이션, 둥근 28~36px 모서리, 부드러운 그림자로 visionOS 같은 공간감을 줍니다.</p></div>
+</div>
+</section>
+
+<section id="video">
+<div class="eyebrow">07 · 제안 영상</div><h2>52초 매장 컨셉 영상</h2>
+<div class="glass"><p>군자 테이스팅 룸 컨셉 영상 (8개 장면: 타이틀 → 왜 군자 → 컨셉 → 낮/밤 → 디저트 → 공간·음악 → 굿즈 → 타겟). 폴더 안의 <code>gunja.mp4</code>를 먼저 재생하고, 열리지 않으면 온라인 사본을 재생합니다.</p>
+<video controls playsinline preload="metadata" poster="https://oscarkiwankim.github.io/seoul-specialty-coffee/assets/gunja-tasting-room-poster.jpg">
+<source src="gunja.mp4" type="video/mp4">
+<source src="https://oscarkiwankim.github.io/seoul-specialty-coffee/assets/gunja-tasting-room-concept.mp4" type="video/mp4">
+<a href="https://oscarkiwankim.github.io/seoul-specialty-coffee/assets/gunja-tasting-room-concept.mp4">영상 보기 (MP4)</a>
+</video></div>
+</section>
+
+<section id="appendix">
+<div class="eyebrow">부록 · 대화 정리 (2026-10-18)</div><h2>데이터와 작업 기록</h2>
+<div class="glass scroll"><h3>서울 전체 스크리닝 (2024Q2→2026Q2)</h3><p>상위권: 어린이대공원역 3번, 경희대삼거리, 마포FM, 경동고등학교, 능동우편취급국, 서연중학교, 신림역. 대학가 편향이 있고 마포FM·경동고는 위치 미확인.</p>
+<h3>소셜 지표 (미완)</h3><p>유튜브 "{동네} 카페" 상위 약 80편 중앙 조회수: 성수 29,377 / 홍대 4,154 / 연남 1,120 / 약수 670 / 군자 538 / 연희동 502 / 신림 434 / 문래 355 / 회기 306 / 어린이대공원 220. 날짜 정렬 미적용으로 업로드 증가율 미계산. 인스타그램은 해시태그 페이지 오류로 측정 못함.</p></div>
+<div class="glass scroll" style="margin-top:16px"><h3>서울시 열린데이터광장 데이터셋</h3><table><tr><th>SERVICE</th><th>내용</th></tr>
+<tr><td>VwsmTrdarSelngQq</td><td>추정매출-상권 (커피-음료, 2021Q1~2026Q2)</td></tr><tr><td>VwsmTrdarStorQq</td><td>점포-상권 (점포·프랜차이즈·개폐업)</td></tr><tr><td>VwsmTrdarFlpopQq</td><td>길단위 유동인구</td></tr><tr><td>VwsmTrdarIxQq</td><td>상권변동지표</td></tr><tr><td>VwsmTrdarRepopQq, VwsmTrdarWrcPopltnQq</td><td>상주·직장인구</td></tr><tr><td>SPOP_LOCAL_RESD_DONG</td><td>생활인구 (행정동, 일 단위)</td></tr><tr><td>LOCALDATA_072405</td><td>휴게음식점 인허가 (2001~, 커피숍 업태)</td></tr></table><p>임대료는 API에서 확인하지 못함(한국부동산원 자료 필요).</p></div>
+<div class="glass scroll" style="margin-top:16px"><h3>카카오 분기 실적 (연결, 억원, DART)</h3><table>
+<tr><th>분기</th><th class="r">매출 24</th><th class="r">25</th><th class="r">26</th><th class="r">영업익 24</th><th class="r">25</th><th class="r">26</th><th class="r">순익 24</th><th class="r">25</th><th class="r">26</th></tr>
+<tr><td>1Q</td><td class="r">19,884</td><td class="r">18,637</td><td class="r">19,421</td><td class="r">1,203</td><td class="r">1,054</td><td class="r">2,114</td><td class="r">677</td><td class="r">2,003</td><td class="r">2,268</td></tr>
+<tr><td>2Q</td><td class="r">20,049</td><td class="r">20,283</td><td class="r">20,985</td><td class="r">1,340</td><td class="r">1,859</td><td class="r">2,770</td><td class="r">871</td><td class="r">1,718</td><td class="r">180</td></tr>
+<tr><td>3Q</td><td class="r">19,214</td><td class="r">20,866</td><td class="r">-</td><td class="r">1,305</td><td class="r">2,080</td><td class="r">-</td><td class="r">785</td><td class="r">1,929</td><td class="r">-</td></tr>
+<tr><td>4Q</td><td class="r">19,570</td><td class="r">21,205</td><td class="r">-</td><td class="r">754</td><td class="r">2,327</td><td class="r">-</td><td class="r">-3,952</td><td class="r">-471</td><td class="r">-</td></tr></table>
+<p>4Q는 연간−3Q 누적. 2026 보고서가 2025 1Q·2Q 재작성(1Q 17,479/1,274, 2Q 19,175/2,039). 2Q26 매출 +9.4%, 영업이익 +35.9%, 영업이익률 10.6%→13.2%, 순이익 -89.5%(게임 사업 연결 제외 등). 주가 31,700원(10/16), 52주 30,250~69,700원.</p></div>
+<div class="glass" style="margin-top:16px"><h3>만든 파일 · 도구</h3><ul>
+<li>kakao_dashboard.html, output/카카오_20261018_01.html (숫자 검증 67/67), output/카카오_data.json</li>
+<li>gunja_hotspot.html (v1 폐기), gunja_hotspot_v2.html (dart 리포트 디자인 + 매장 컨셉)</li>
+<li>hound v1.1.0 설치됨. hyperframes는 플러그인 명령 미실행, Node·FFmpeg는 이전 PC(winget)에 설치.</li>
+<li>API 키는 대화에 노출되어 재발급 권장(이 페이지에 포함하지 않음).</li></ul>
+<h3>아직 비어 있는 것</h3><ul>
+<li>인스타그램 해시태그·카페 계정 언급, 유튜브 업로드 시계열</li><li>임대료·권리금</li><li>군자 경쟁 카페 가격, 저녁 시간대 매출 비중</li><li>코스 가격, 디저트 일 한정 수량, 좌석 수, 굿즈 구성</li><li>연희 상권 코드 위치 확인</li><li>README(조번호, GitHub 계정, 조원 역할, 프롬프트 전문)와 GitHub Pages 배포</li></ul></div>
+</section>
+</main>
 </body>
 </html>
