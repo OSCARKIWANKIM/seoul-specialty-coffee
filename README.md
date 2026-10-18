@@ -5,6 +5,10 @@
 - 사이트: https://oscarkiwankim.github.io/seoul-specialty-coffee/
 - 데이터: 서울시 상권분석서비스, 서울 열린데이터광장, LOCALDATA 휴게음식점 인허가, 유튜브 검색 결과 (기준 2026년 2분기)
 
+## 매장 컨셉 영상
+- [군자 테이스팅 룸 컨셉 영상 (52초)](assets/gunja-tasting-room-concept.mp4)
+- 바로 보기: https://oscarkiwankim.github.io/seoul-specialty-coffee/assets/gunja-tasting-room-concept.mp4
+
 ## 페이지 구성
 1. "뜬다"의 정의와 지표 5개, 기준값 (성수 도약기 보정)
 2. 후보 3곳 지표 분석
